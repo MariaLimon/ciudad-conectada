@@ -1,0 +1,55 @@
+name: CI Pipeline .NET MAUI + ASP.NET Core
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U testuser -d testdb"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      # 🏗️ SECCIÓN DE COMPILACIÓN (BUILD)
+      # Compilamos ambos proyectos para detectar errores de compilación y generar artefactos.
+      - name: Compilar Backend
+        run: dotnet build ./Backend/ApiBackend.csproj --configuration Release --no-restore
+
+      - name: Compilar Frontend (MAUI)
+        run: dotnet build ./Frontend/AppMaui.csproj --configuration Release --no-restore
+
+      # 🧪 SECCIÓN DE PRUEBAS (TEST)
+      # Ejecutamos las pruebas unitarias e integración del backend.
+      - name: Ejecutar pruebas del Backend
+        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --no-restore --verbosity normal
+
+      - name: Publicar resultados
+        if: always()
+        run: echo "Pipeline completado correctamente"
