@@ -1,55 +1,86 @@
-name: CI Pipeline .NET MAUI + ASP.NET Core
+# Nombre del pipeline que se mostrará en la interfaz de GitHub Actions.
+name: 'CI Pipeline: .NET MAUI y ASP.NET Core'
 
+# --- Disparador (Trigger) ---
+# El workflow se activará con cada push a la rama 'develop'.
 on:
   push:
-    branches: ["main", "develop"]
-  pull_request:
-    branches: ["main", "develop"]
+    branches:
+      - develop
 
+# --- Definición de los Jobs (Tareas) ---
 jobs:
-  build-and-test:
-    runs-on: windows-latest
-
+  # Job para el Backend (ASP.NET Core)
+  build-and-test-backend:
+    name: 'Backend: Build & Test'
+    runs-on: ubuntu-latest
+    
     services:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpassword
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_DB: test_db
         options: >-
-          --health-cmd "pg_isready -U testuser -d testdb"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
-      - name: Checkout del código
+      - name: 'Checkout del código'
         uses: actions/checkout@v4
 
-      - name: Configurar .NET
+      - name: 'Configurar entorno .NET 8'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '8.0.x'
 
-      - name: Restaurar dependencias
-        run: dotnet restore
+      # --- Compilación (Build) ---
+      # Justificación: Se restauran las dependencias y se compila el proyecto backend.
+      # La ruta se ajusta a la carpeta 'Backend'.
+      - name: 'Restaurar dependencias del Backend'
+        run: dotnet restore Backend/Backend.csproj
+        
+      - name: 'Compilar Backend (Build)'
+        run: dotnet build Backend/Backend.csproj --configuration Release --no-restore
 
-      # 🏗️ SECCIÓN DE COMPILACIÓN (BUILD)
-      # Compilamos ambos proyectos para detectar errores de compilación y generar artefactos.
-      - name: Compilar Backend
-        run: dotnet build ./Backend/ApiBackend.csproj --configuration Release --no-restore
+      # --- Pruebas (Test) ---
+      # Justificación: Se ejecutan las pruebas del backend.
+      # NOTA: Deberás crear un proyecto de pruebas en Backend/Backend.Tests.csproj
+      - name: 'Ejecutar Pruebas del Backend'
+        run: dotnet test Backend/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
+        env:
+          # Asegúrate de que tu proyecto de pruebas usa esta variable de entorno para la conexión.
+          ConnectionStrings__TestDb: "Host=localhost;Port=5432;Username=postgres;Password=postgres_password;Database=test_db"
 
-      - name: Compilar Frontend (MAUI)
-        run: dotnet build ./Frontend/AppMaui.csproj --configuration Release --no-restore
+  # Job para el Frontend (.NET MAUI)
+  build-and-test-frontend:
+    name: 'Frontend: Build & Test'
+    runs-on: windows-latest # MAUI necesita Windows para compilar para Android/iOS
+    
+    steps:
+      - name: 'Checkout del código'
+        uses: actions/checkout@v4
 
-      # 🧪 SECCIÓN DE PRUEBAS (TEST)
-      # Ejecutamos las pruebas unitarias e integración del backend.
-      - name: Ejecutar pruebas del Backend
-        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --no-restore --verbosity normal
+      - name: 'Configurar entorno .NET 8'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          
+      # --- Compilación (Build) ---
+      # Justificación: Se compila el proyecto MAUI para Android para validar la lógica y la UI.
+      # La ruta se ajusta a la carpeta 'Frontend'.
+      - name: 'Restaurar dependencias del Frontend'
+        run: dotnet restore Frontend/Frontend.csproj
+        
+      - name: 'Compilar Frontend para Android (Build)'
+        run: dotnet build Frontend/Frontend.csproj -f net8.0-android -c Release --no-restore
 
-      - name: Publicar resultados
-        if: always()
-        run: echo "Pipeline completado correctamente"
+      # --- Pruebas (Test) ---
+      # Justificación: Se ejecutan las pruebas unitarias del frontend.
+      # NOTA: Deberás crear un proyecto de pruebas en Frontend/Frontend.Tests.csproj
+      - name: 'Ejecutar Pruebas del Frontend'
+        run: dotnet test Frontend/Frontend.Tests.csproj --configuration Release --no-build --verbosity normal
