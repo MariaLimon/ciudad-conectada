@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.csproj": {}
+    "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.Tests\\Backend.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.csproj": {
+    "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.Tests\\Backend.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.csproj",
-        "projectName": "Backend",
-        "projectPath": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.Tests\\Backend.Tests.csproj",
+        "projectName": "Backend.Tests",
+        "projectPath": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.Tests\\Backend.Tests.csproj",
         "packagesPath": "C:\\Users\\limon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\obj\\",
+        "outputPath": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Backend\\Backend.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\limon\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,17 +44,21 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[8.0.4, )"
+              "version": "[18.0.0, )"
             },
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+            "coverlet.collector": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[6.0.0, )"
             },
-            "Swashbuckle.AspNetCore": {
+            "xunit": {
               "target": "Package",
-              "version": "[6.4.0, )"
+              "version": "[2.9.3, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[3.1.5, )"
             }
           },
           "imports": [
@@ -69,9 +73,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
