@@ -1,0 +1,77 @@
+# Nombre del pipeline que se mostrará en la interfaz de GitHub Actions.
+name: 'CI Pipeline: .NET MAUI y ASP.NET Core'
+
+# --- Disparador (Trigger) ---
+# El workflow se activará con cada push a la rama 'develop'.
+on:
+  push:
+    branches:
+      - develop
+
+# --- Definición de los Jobs (Tareas) ---
+jobs:
+  # Job para el Backend (ASP.NET Core)
+  build-and-test-backend:
+    name: 'Backend: Build & Test'
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: 'Checkout del código'
+        uses: actions/checkout@v4
+
+      - name: 'Configurar entorno .NET 8'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: 'Restaurar dependencias del Backend'
+        run: dotnet restore Backend/Backend.Tests/Backend.Tests.csproj
+        
+      - name: 'Compilar Backend (Build)'
+        run: dotnet build Backend/Backend.Tests/Backend.Tests.csproj --configuration Release --no-restore
+
+      - name: 'Ejecutar Pruebas del Backend'
+        run: dotnet test Backend/Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
+        env:
+          ConnectionStrings__TestDb: "Host=localhost;Port=5432;Username=postgres;Password=postgres_password;Database=test_db"
+
+  # Job para el Frontend (.NET MAUI)
+  build-and-test-frontend:
+    name: 'Frontend: Build & Test'
+    runs-on: windows-latest
+    
+    steps:
+      - name: 'Checkout del código'
+        uses: actions/checkout@v4
+
+      - name: 'Configurar entorno .NET 8'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          
+      - name: 'Instalar .NET MAUI Workloads'
+        run: dotnet workload restore
+
+      # --- Compilación (Build) ---
+      # Justificación: Construimos el proyecto principal para Android únicamente.
+      # Esto evita que intente compilar para iOS/Mac/Windows y previene todos los errores asociados.
+      - name: 'Compilar Frontend para Android'
+        run: dotnet build Frontend/Frontend.Tests/Frontend.csproj -f net8.0-android -c Release
+        
+      # Justificación: Construimos y ejecutamos las pruebas del proyecto de pruebas por separado.
+      - name: 'Ejecutar Pruebas del Frontend'
+        run: dotnet test Frontend/Frontend.Tests/Frontend.Tests.csproj --configuration Release --verbosity normal
