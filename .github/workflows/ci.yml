@@ -13,10 +13,10 @@ jobs:
   # Job para el Backend (ASP.NET Core)
   build-and-test-backend:
     name: 'Backend: Build & Test'
+    # Usamos una máquina virtual Ubuntu, ideal y rápida para APIs de .NET.
     runs-on: ubuntu-latest
     
     # --- Configuración del contenedor de servicio para PostgreSQL ---
-    # Esto crea una base de datos PostgreSQL temporal para las pruebas de integración.
     services:
       postgres:
         image: postgres:15
@@ -41,27 +41,26 @@ jobs:
           dotnet-version: '8.0.x'
 
       # --- Compilación (Build) ---
-      # Justificación: Restauramos las dependencias de toda la solución para asegurar
-      # que todos los proyectos (incluidos los de pruebas) estén listos.
-      - name: 'Restaurar dependencias de la Solución'
-        run: dotnet restore ciudad-conectada.sln
+      # Justificación: Restauramos las dependencias del proyecto de PRUEBAS.
+      # Esto es clave, ya que restaurará sus propias dependencias (xUnit) y las del proyecto que referencia (Backend).
+      - name: 'Restaurar dependencias del Backend'
+        run: dotnet restore Backend/Backend.Tests.csproj
         
-      # Justificación: Compilamos toda la solución para validar que no hay errores de compilación
-      # en ningún proyecto. Usamos 'no-restore' para ahorrar tiempo.
-      - name: 'Compilar Solución (Build)'
-        run: dotnet build ciudad-conectada.sln --configuration Release --no-restore
+      # Justificación: Compilamos el proyecto de pruebas, lo que a su vez fuerza la compilación del proyecto principal.
+      - name: 'Compilar Backend (Build)'
+        run: dotnet build Backend/Backend.Tests.csproj --configuration Release --no-restore
 
       # --- Pruebas (Test) ---
-      # Justificación: Ejecutamos las pruebas del backend usando un filtro para no interferir
-      # con las pruebas del frontend. La variable de entorno permite la conexión a la BD de pruebas.
+      # Justificación: Ejecutamos las pruebas unitarias y de integración del backend.
       - name: 'Ejecutar Pruebas del Backend'
-        run: dotnet test CiudadConectada.sln --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~Backend.Tests"
+        run: dotnet test Backend/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
         env:
           ConnectionStrings__TestDb: "Host=localhost;Port=5432;Username=postgres;Password=postgres_password;Database=test_db"
 
   # Job para el Frontend (.NET MAUI)
   build-and-test-frontend:
     name: 'Frontend: Build & Test'
+    # Justificación: .NET MAUI necesita un entorno Windows para compilar para Android/iOS.
     runs-on: windows-latest
     
     steps:
@@ -73,16 +72,22 @@ jobs:
         with:
           dotnet-version: '8.0.x'
           
+      # --- PASO NUEVO Y CLAVE ---
+      # Justificación: Instalamos las "workloads" de .NET MAUI en el runner de Windows.
+      # Este comando lee los archivos .csproj e instala automáticamente las herramientas necesarias para compilar.
+      - name: 'Instalar .NET MAUI Workloads'
+        run: dotnet workload restore
+
       # --- Compilación (Build) ---
-      # Justificación: Restauramos las dependencias de toda la solución.
-      - name: 'Restaurar dependencias de la Solución'
-        run: dotnet restore CiudadConectada.sln
+      # Justificación: Restauramos las dependencias del proyecto de pruebas del frontend.
+      - name: 'Restaurar dependencias del Frontend'
+        run: dotnet restore Frontend/Frontend.Tests.csproj
         
-      # Justificación: Compilamos toda la solución para validar el frontend y otros componentes.
-      - name: 'Compilar Solución (Build)'
-        run: dotnet build CiudadConectada.sln --configuration Release --no-restore
+      # Justificación: Compilamos el proyecto MAUI para Android para validar la lógica y la UI.
+      - name: 'Compilar Frontend para Android (Build)'
+        run: dotnet build Frontend/Frontend.csproj -f net8.0-android -c Release --no-restore
 
       # --- Pruebas (Test) ---
-      # Justificación: Ejecutamos las pruebas del frontend usando un filtro específico.
+      # Justificación: Ejecutamos las pruebas unitarias del proyecto MAUI.
       - name: 'Ejecutar Pruebas del Frontend'
-        run: dotnet test CiudadConectada.sln --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~Frontend.Tests"
+        run: dotnet test Frontend/Frontend.Tests.csproj --configuration Release --no-build --verbosity normal
