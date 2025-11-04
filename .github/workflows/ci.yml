@@ -79,10 +79,10 @@ jobs:
       # fuerza el uso del SDK 8.0, evitando los errores de workloads de iOS/Mac.
       # Esto compilará tanto el proyecto principal como el de pruebas.
       - name: 'Compilar Solución (Build)'
-        run: dotnet build CiudadConectada.sln --configuration Release
+        run: dotnet build ciudad-conectada.sln --configuration Release
 
       # --- Pruebas (Test) ---
       # Justificación: Ejecutamos las pruebas del frontend usando un filtro para
       # asegurar que solo se ejecuten las de este job.
       - name: 'Ejecutar Pruebas del Frontend'
-        run: dotnet test CiudadConectada.sln --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~Frontend.Tests"
+        run: dotnet test ciudad-conectada.sln --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~Frontend.Tests"
