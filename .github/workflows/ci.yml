@@ -44,16 +44,16 @@ jobs:
       # Justificación: Restauramos las dependencias del proyecto de PRUEBAS.
       # Esto es clave, ya que restaurará sus propias dependencias (xUnit) y las del proyecto que referencia (Backend).
       - name: 'Restaurar dependencias del Backend'
-        run: dotnet restore Backend/Backend.Tests.csproj
+        run: dotnet restore Backend/Backend.Tests/Backend.Tests.csproj
         
       # Justificación: Compilamos el proyecto de pruebas, lo que a su vez fuerza la compilación del proyecto principal.
       - name: 'Compilar Backend (Build)'
-        run: dotnet build Backend/Backend.Tests.csproj --configuration Release --no-restore
+        run: dotnet build Backend/Backend.Tests/Backend.Tests.csproj --configuration Release --no-restore
 
       # --- Pruebas (Test) ---
       # Justificación: Ejecutamos las pruebas unitarias y de integración del backend.
       - name: 'Ejecutar Pruebas del Backend'
-        run: dotnet test Backend/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
+        run: dotnet test Backend/Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
         env:
           ConnectionStrings__TestDb: "Host=localhost;Port=5432;Username=postgres;Password=postgres_password;Database=test_db"
 
@@ -81,13 +81,13 @@ jobs:
       # --- Compilación (Build) ---
       # Justificación: Restauramos las dependencias del proyecto de pruebas del frontend.
       - name: 'Restaurar dependencias del Frontend'
-        run: dotnet restore Frontend/Frontend.Tests.csproj
+        run: dotnet restore Frontend/Frontend.Tests/Frontend.Tests.csproj
         
       # Justificación: Compilamos el proyecto MAUI para Android para validar la lógica y la UI.
       - name: 'Compilar Frontend para Android (Build)'
-        run: dotnet build Frontend/Frontend.csproj -f net8.0-android -c Release --no-restore
+        run: dotnet build Frontend/Frontend.Tests/Frontend.csproj -f net8.0-android -c Release --no-restore
 
       # --- Pruebas (Test) ---
       # Justificación: Ejecutamos las pruebas unitarias del proyecto MAUI.
       - name: 'Ejecutar Pruebas del Frontend'
-        run: dotnet test Frontend/Frontend.Tests.csproj --configuration Release --no-build --verbosity normal
+        run: dotnet test Frontend/Frontend.Tests/Frontend.Tests.csproj --configuration Release --no-build --verbosity normal
