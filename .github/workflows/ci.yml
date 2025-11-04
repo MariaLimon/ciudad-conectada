@@ -38,24 +38,17 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      # --- Compilación (Build) ---
-      # Justificación: Se restauran las dependencias y se compila el proyecto backend.
-      # La ruta se ajusta a la carpeta 'Backend'.
-      - name: 'Restaurar dependencias del Backend'
-        run: dotnet restore Backend/Backend.csproj
-        
-      - name: 'Compilar Backend (Build)'
-        run: dotnet build Backend/Backend.csproj --configuration Release --no-restore
-
-      # --- Pruebas (Test) ---
-      # Justificación: Se ejecutan las pruebas del backend.
-      # NOTA: Deberás crear un proyecto de pruebas en Backend/Backend.Tests.csproj
-      - name: 'Ejecutar Pruebas del Backend'
-        run: dotnet test Backend/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
-        env:
-          # Asegúrate de que tu proyecto de pruebas usa esta variable de entorno para la conexión.
-          ConnectionStrings__TestDb: "Host=localhost;Port=5432;Username=postgres;Password=postgres_password;Database=test_db"
-
+      # Job para el Backend (ASP.NET Core)
+build-and-test-backend:
+  # ...
+  steps:
+    # ...
+    - name: 'Restaurar dependencias de la Solución'
+      run: dotnet restore CiudadConectada.sln
+    - name: 'Compilar Backend (Build)'
+      run: dotnet build CiudadConectada.sln --configuration Release --no-restore
+    - name: 'Ejecutar Pruebas del Backend'
+      run: dotnet test CiudadConectada.sln --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~Backend.Tests"
   # Job para el Frontend (.NET MAUI)
   build-and-test-frontend:
     name: 'Frontend: Build & Test'
