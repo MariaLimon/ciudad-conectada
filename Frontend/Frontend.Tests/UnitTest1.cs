@@ -1,3 +1,6 @@
+using Xunit;
+using System.Linq;
+
 namespace Frontend.Tests;
 
 public class UnitTest1
