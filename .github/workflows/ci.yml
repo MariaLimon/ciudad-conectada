@@ -44,12 +44,12 @@ jobs:
       # Justificación: Restauramos las dependencias de toda la solución para asegurar
       # que todos los proyectos (incluidos los de pruebas) estén listos.
       - name: 'Restaurar dependencias de la Solución'
-        run: dotnet restore CiudadConectada.sln
+        run: dotnet restore ciudad-conectada.sln
         
       # Justificación: Compilamos toda la solución para validar que no hay errores de compilación
       # en ningún proyecto. Usamos 'no-restore' para ahorrar tiempo.
       - name: 'Compilar Solución (Build)'
-        run: dotnet build CiudadConectada.sln --configuration Release --no-restore
+        run: dotnet build ciudad-conectada.sln --configuration Release --no-restore
 
       # --- Pruebas (Test) ---
       # Justificación: Ejecutamos las pruebas del backend usando un filtro para no interferir
