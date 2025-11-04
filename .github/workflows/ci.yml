@@ -81,7 +81,7 @@ jobs:
       # --- Compilación (Build) ---
       # Justificación: Restauramos las dependencias del proyecto de pruebas del frontend.
       - name: 'Restaurar dependencias del Frontend'
-        run: dotnet restore Frontend/Frontend.Tests/Frontend.Tests.csproj
+        run: dotnet restore Frontend/Frontend.csproj
         
       # Justificación: Compilamos el proyecto MAUI para Android para validar la lógica y la UI.
       - name: 'Compilar Frontend para Android (Build)'
