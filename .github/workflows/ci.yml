@@ -57,10 +57,9 @@ jobs:
         env:
           ConnectionStrings__TestDb: "Host=localhost;Port=5432;Username=postgres;Password=postgres_password;Database=test_db"
 
-  # Job para el Frontend (.NET MAUI)
+   # Job para el Frontend (.NET MAUI)
   build-and-test-frontend:
     name: 'Frontend: Build & Test'
-    # Justificación: .NET MAUI necesita un entorno Windows para compilar para Android/iOS.
     runs-on: windows-latest
     
     steps:
@@ -72,21 +71,18 @@ jobs:
         with:
           dotnet-version: '8.0.x'
           
-      # --- PASO NUEVO Y CLAVE ---
-      # Justificación: Instalamos las "workloads" de .NET MAUI en el runner de Windows.
-      # Este comando lee los archivos .csproj e instala automáticamente las herramientas necesarias para compilar.
       - name: 'Instalar .NET MAUI Workloads'
         run: dotnet workload restore
 
-            # --- Compilación (Build) ---
-      # Justificación: Combinamos restore y build en un solo paso.
-      # Al especificar el framework (-f net8.0-android), 'dotnet build' restaurará
-      # únicamente las dependencias necesarias para Android, evitando los errores
-      # con las workloads obsoletas de iOS y MacCatalyst.
-      - name: 'Compilar y Restaurar Frontend para Android'
-        run: dotnet build Frontend/Frontend.csproj -f net8.0-android -c Release
-      
+      # --- Compilación (Build) ---
+      # Justificación: Construimos la solución completa. El archivo global.json
+      # fuerza el uso del SDK 8.0, evitando los errores de workloads de iOS/Mac.
+      # Esto compilará tanto el proyecto principal como el de pruebas.
+      - name: 'Compilar Solución (Build)'
+        run: dotnet build CiudadConectada.sln --configuration Release
+
       # --- Pruebas (Test) ---
-      # Justificación: Ejecutamos las pruebas unitarias del proyecto MAUI.
+      # Justificación: Ejecutamos las pruebas del frontend usando un filtro para
+      # asegurar que solo se ejecuten las de este job.
       - name: 'Ejecutar Pruebas del Frontend'
-        run: dotnet test Frontend/Frontend.Tests/Frontend.Tests.csproj --configuration Release --no-build --verbosity normal
+        run: dotnet test CiudadConectada.sln --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~Frontend.Tests"
