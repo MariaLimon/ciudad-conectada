@@ -85,7 +85,7 @@ jobs:
         
       # Justificación: Compilamos el proyecto MAUI para Android para validar la lógica y la UI.
       - name: 'Compilar Frontend para Android (Build)'
-        run: dotnet build Frontend/Frontend.Tests/Frontend.csproj -f net8.0-android -c Release --no-restore
+        run: dotnet build Frontend/Frontend.csproj -f net8.0-android -c Release --no-restore
 
       # --- Pruebas (Test) ---
       # Justificación: Ejecutamos las pruebas unitarias del proyecto MAUI.
