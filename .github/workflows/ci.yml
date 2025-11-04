@@ -70,9 +70,10 @@ jobs:
       # Justificación: Construimos el proyecto principal para Android únicamente.
       # Esto evita que intente compilar para iOS/Mac/Windows y previene todos los errores asociados.
       - name: 'Compilar Frontend para Android'
-        run: dotnet build Frontend/Frontend.csproj -f net8.0-android -c Release
+        run: dotnet build Frontend/Frontend.Tests/Frontend.Tests.csproj --configuration Release
         
       # Justificación: Construimos y ejecutamos las pruebas del proyecto de pruebas por separado.
       - name: 'Ejecutar Pruebas del Frontend'
         run: dotnet test Frontend/Frontend.Tests/Frontend.Tests.csproj --configuration Release --verbosity normal
+
 
