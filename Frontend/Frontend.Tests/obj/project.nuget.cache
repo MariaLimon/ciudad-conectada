@@ -1,10 +1,9 @@
 {
   "version": 2,
-  "dgSpecHash": "+V2xM0OWDCkmU9oqyTYGF2CvRpq5vYamm82xhjAGOqv6f4Pt+PlrT/PYycR73qUlnkRJITUnFgAVce7S0Ou5NA==",
+  "dgSpecHash": "VfMfjeZxC1c=",
   "success": true,
   "projectFilePath": "C:\\Users\\limon\\OneDrive\\Desktop\\CC\\ciudad-conectada\\Frontend\\Frontend.Tests\\Frontend.Tests.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\limon\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\microsoft.net.test.sdk\\17.8.0\\microsoft.net.test.sdk.17.8.0.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
@@ -85,13 +84,13 @@
     "C:\\Users\\limon\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\limon\\.nuget\\packages\\xunit\\2.5.3\\xunit.2.5.3.nupkg.sha512",
+    "C:\\Users\\limon\\.nuget\\packages\\xunit\\2.6.2\\xunit.2.6.2.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\xunit.abstractions\\2.0.3\\xunit.abstractions.2.0.3.nupkg.sha512",
-    "C:\\Users\\limon\\.nuget\\packages\\xunit.analyzers\\1.4.0\\xunit.analyzers.1.4.0.nupkg.sha512",
-    "C:\\Users\\limon\\.nuget\\packages\\xunit.assert\\2.5.3\\xunit.assert.2.5.3.nupkg.sha512",
-    "C:\\Users\\limon\\.nuget\\packages\\xunit.core\\2.5.3\\xunit.core.2.5.3.nupkg.sha512",
-    "C:\\Users\\limon\\.nuget\\packages\\xunit.extensibility.core\\2.5.3\\xunit.extensibility.core.2.5.3.nupkg.sha512",
-    "C:\\Users\\limon\\.nuget\\packages\\xunit.extensibility.execution\\2.5.3\\xunit.extensibility.execution.2.5.3.nupkg.sha512",
+    "C:\\Users\\limon\\.nuget\\packages\\xunit.analyzers\\1.6.0\\xunit.analyzers.1.6.0.nupkg.sha512",
+    "C:\\Users\\limon\\.nuget\\packages\\xunit.assert\\2.6.2\\xunit.assert.2.6.2.nupkg.sha512",
+    "C:\\Users\\limon\\.nuget\\packages\\xunit.core\\2.6.2\\xunit.core.2.6.2.nupkg.sha512",
+    "C:\\Users\\limon\\.nuget\\packages\\xunit.extensibility.core\\2.6.2\\xunit.extensibility.core.2.6.2.nupkg.sha512",
+    "C:\\Users\\limon\\.nuget\\packages\\xunit.extensibility.execution\\2.6.2\\xunit.extensibility.execution.2.6.2.nupkg.sha512",
     "C:\\Users\\limon\\.nuget\\packages\\xunit.runner.visualstudio\\2.5.3\\xunit.runner.visualstudio.2.5.3.nupkg.sha512"
   ],
   "logs": []

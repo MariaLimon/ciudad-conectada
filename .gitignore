@@ -1,0 +1,9 @@
+# Archivos de entorno
+.env
+# .NET build and test outputs
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log

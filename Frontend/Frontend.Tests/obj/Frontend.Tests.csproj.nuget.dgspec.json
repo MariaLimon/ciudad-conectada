@@ -48,15 +48,13 @@
               "target": "Package",
               "version": "[17.8.0, )"
             },
-            "coverlet.collector": {
-              "target": "Package",
-              "version": "[6.0.0, )"
-            },
             "xunit": {
               "target": "Package",
-              "version": "[2.5.3, )"
+              "version": "[2.6.2, )"
             },
             "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[2.5.3, )"
             }
@@ -77,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
