@@ -7,32 +7,31 @@ namespace Backend.Tests
 {
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
     {
+        // ESTE es el método correcto para sobreescribir
         protected override void ConfigureWebHost(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
-                // 1. Encuentra y elimina el servicio de la base de datos PostgreSQL
+                // 1. Encontrar y eliminar el DbContext de PostgreSQL
                 var descriptor = services.SingleOrDefault(
-                    d => d.ServiceType ==
-                        typeof(DbContextOptions<ApplicationDbContext>));
+                    d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
                 if (descriptor != null)
                 {
                     services.Remove(descriptor);
                 }
 
-                // 2. Añade el servicio de la base de datos en memoria
+                // 2. Añadir el DbContext de InMemory
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
                 });
 
-                // 3. Crea el servicio a partir del proveedor actualizado
+                // 3. (Opcional) Crear la base de datos para asegurar que está vacía
                 var sp = services.BuildServiceProvider();
                 using (var scope = sp.CreateScope())
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<ApplicationDbContext>();
+                    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                     db.Database.EnsureCreated();
                 }
             });

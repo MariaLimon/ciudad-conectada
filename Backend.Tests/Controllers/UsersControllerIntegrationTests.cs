@@ -1,9 +1,7 @@
 using Xunit;
 using System.Net;
-using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using ApiCC.Models;
-using System.Text.Json;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Backend.Tests.Controllers
 {
@@ -13,7 +11,11 @@ namespace Backend.Tests.Controllers
 
         public UsersControllerIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
-            _client = factory.CreateClient();
+            // CLAVE: Establecemos el entorno a "Testing" aquí
+            _client = factory.WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Testing");
+            }).CreateClient();
         }
 
         [Fact]
@@ -23,24 +25,20 @@ namespace Backend.Tests.Controllers
             var response = await _client.GetAsync("/api/users");
 
             // Assert
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
+            response.EnsureSuccessStatusCode();
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType?.ToString());
         }
 
         [Fact]
-        public async Task GetUsers_ReturnsListOfUsers()
+        public async Task GetUsers_ReturnsEmptyList_WhenNoUsersExist()
         {
             // Act
             var response = await _client.GetAsync("/api/users");
 
             // Assert
             response.EnsureSuccessStatusCode();
-            
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var users = JsonSerializer.Deserialize<List<User>>(stringResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            Assert.NotNull(users);
-            Assert.IsType<List<User>>(users);
+            Assert.Equal("[]", stringResponse);
         }
     }
 }
