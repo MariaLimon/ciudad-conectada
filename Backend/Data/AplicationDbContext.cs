@@ -1,6 +1,7 @@
 // Data/ApplicationDbContext.cs
 using Microsoft.EntityFrameworkCore;
 using ApiCC.Models;
+using Backend.Models;
 
 namespace ApiCC.Data
 {
@@ -11,7 +12,8 @@ namespace ApiCC.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
