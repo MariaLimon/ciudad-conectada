@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiCC.Models
+namespace Backend.Models
 {
     public class User
     {
@@ -18,5 +18,6 @@ namespace ApiCC.Models
         public bool IsEmailConfirmed { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
+        public ICollection<Report>? Reports { get; set; }
     }
 }

@@ -1,22 +1,25 @@
-using ApiCC.Data; // Tu DbContext
-using ApiCC.Models; // Tu modelo User
+using Backend.Data; 
+using Backend.Models;
 
-public interface IUserService
+namespace Backend.Services
 {
-    Task<User?> GetUserByIdAsync(int id);
-}
-
-public class UserService : IUserService
-{
-    private readonly ApplicationDbContext _context;
-
-    public UserService(ApplicationDbContext context)
+    public interface IUserService
     {
-        _context = context;
+        Task<User?> GetUserByIdAsync(int id);
     }
 
-    public async Task<User?> GetUserByIdAsync(int id)
+    public class UserService : IUserService
     {
-        return await _context.Users.FindAsync(id);
+        private readonly ApplicationDbContext _context;
+
+        public UserService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
     }
 }

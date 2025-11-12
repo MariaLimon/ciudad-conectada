@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ApiCC.Models;
-using ApiCC.Data;
+using Backend.Models;
+using Backend.Data;
 
-namespace ApiCC.Controllers
+namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -38,7 +38,6 @@ namespace ApiCC.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Obtener el siguiente ID
             var maxId = await _context.Users.MaxAsync(u => (int?)u.Id) ?? 0;
             user.Id = maxId + 1;
 
