@@ -1,55 +1,48 @@
-name: CI Pipeline .NET MAUI + ASP.NET Core
+# Nombre del pipeline que se mostrará en la interfaz de GitHub Actions.
+name: 'CI Pipeline: Backend'
 
+# --- Disparador (Trigger) ---
+# El workflow se activará con cada push a las ramas 'main' y 'develop'.
 on:
   push:
-    branches: ["main", "develop"]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: ["main", "develop"]
+    branches:
+      - main
+      - develop
 
+# --- Definición de los Jobs (Tareas) ---
 jobs:
-  build-and-test:
-    runs-on: windows-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpassword
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U testuser -d testdb"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+  # Job para el Backend (ASP.NET Core)
+  build-and-test-backend:
+    name: 'Backend: Build & Test'
+    runs-on: ubuntu-latest # Usamos la última versión de Ubuntu para el runner
 
     steps:
-      - name: Checkout del código
+      # Paso 1: Descargar el código del repositorio
+      - name: 'Checkout del código'
         uses: actions/checkout@v4
 
-      - name: Configurar .NET
+      # Paso 2: Configurar el entorno .NET 8
+      - name: 'Configurar entorno .NET 8'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '8.0.x'
 
-      - name: Restaurar dependencias
-        run: dotnet restore
+      # Paso 3: Restaurar las dependencias de toda la solución
+      # Es mejor restaurar la solución completa para asegurar que todos los proyectos se resuelvan correctamente.
+      - name: 'Restaurar dependencias'
+        run: dotnet restore ciudad-conectada.sln
+        
+      # Paso 4: Compilar toda la solución
+      # Compilamos la solución en modo Release para asegurarnos de que no hay errores de compilación.
+      - name: 'Compilar solución (Build)'
+        run: dotnet build ciudad-conectada.sln --configuration Release --no-restore
 
-      # 🏗️ SECCIÓN DE COMPILACIÓN (BUILD)
-      # Compilamos ambos proyectos para detectar errores de compilación y generar artefactos.
-      - name: Compilar Backend
-        run: dotnet build ./Backend/ApiBackend.csproj --configuration Release --no-restore
-
-      - name: Compilar Frontend (MAUI)
-        run: dotnet build ./Frontend/AppMaui.csproj --configuration Release --no-restore
-
-      # 🧪 SECCIÓN DE PRUEBAS (TEST)
-      # Ejecutamos las pruebas unitarias e integración del backend.
-      - name: Ejecutar pruebas del Backend
-        run: dotnet test ./Backend.Tests/Backend.Tests.csproj --no-restore --verbosity normal
-
-      - name: Publicar resultados
-        if: always()
-        run: echo "Pipeline completado correctamente"
+      # Paso 5: Ejecutar las pruebas del Backend
+      # Ejecutamos las pruebas. El CustomWebApplicationFactory usará la BD en memoria,
+      # por lo que no necesitamos configurar una base de datos PostgreSQL real aquí.
+      - name: 'Ejecutar Pruebas del Backend'
+        run: dotnet test Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
