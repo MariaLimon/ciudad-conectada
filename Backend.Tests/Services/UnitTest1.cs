@@ -1,7 +1,8 @@
 using Xunit;
 using Microsoft.EntityFrameworkCore;
-using ApiCC.Data;
-using ApiCC.Models;
+using Backend.Data;
+using Backend.Models;
+using Backend.Services;
 
 namespace Backend.Tests.Services
 {
