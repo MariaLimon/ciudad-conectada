@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using ApiCC.Data;
+using Backend.Data;
+using Backend.Repositories;
+using Backend.Services;
+using Backend.Models;
+using Backend.Interfaces;
 using DotNetEnv;
-
 
 Env.Load();
 
@@ -9,6 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<ReporteRepository>();
+// Repositorios
+builder.Services.AddScoped<IRepository<Report>, ReporteRepository>();
+builder.Services.AddScoped<IRepository<Service>, ServiceRepository>();
+
+// Servicios
+builder.Services.AddScoped<IReporteService, ReporteService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
 
 if (!builder.Environment.IsEnvironment("Testing"))
 {

@@ -5,7 +5,6 @@ using ApiCC.Models;
 
 namespace Backend.Tests.Services
 {
-    // Ya no necesitamos IDisposable porque usaremos la BD en memoria aquí también
     public class UserServiceTests
     {
         private readonly ApplicationDbContext _context;
