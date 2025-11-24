@@ -33,16 +33,13 @@ namespace Backend.Data
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(255);
+                entity.Property(e => e.IsAdmin)
+                .IsRequired()
+                .HasDefaultValue(false);
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.IsAdmin)
-                    .HasDefaultValue(false);
-
-                entity.Property(e => e.IsEmailConfirmed)
-                    .HasDefaultValue(false);
 
                 entity.HasIndex(e => e.Email).IsUnique();
 

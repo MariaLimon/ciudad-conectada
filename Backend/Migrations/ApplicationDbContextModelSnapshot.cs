@@ -44,24 +44,31 @@ namespace Backend.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Enviado");
 
+                    b.Property<string>("Evidencia")
+                        .HasColumnType("text");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("NotasExtras")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ServiceId1")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("TypeService")
-                        .HasColumnType("integer");
-
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeService");
+                    b.HasIndex("ServiceId1");
 
                     b.HasIndex("UserId");
 
@@ -109,11 +116,6 @@ namespace Backend.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<bool>("IsEmailConfirmed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -139,26 +141,26 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Report", b =>
                 {
-                    b.HasOne("Backend.Models.Service", "Service")
-                        .WithMany()
-                        .HasForeignKey("TypeService")
+                    b.HasOne("Backend.Models.Service", "Service1")
+                        .WithMany("ReportsAsService1")
+                        .HasForeignKey("ServiceId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Backend.Models.User", "User")
-                        .WithMany("Reports")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Service");
+                    b.Navigation("Service1");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Backend.Models.User", b =>
+            modelBuilder.Entity("Backend.Models.Service", b =>
                 {
-                    b.Navigation("Reports");
+                    b.Navigation("ReportsAsService1");
                 });
 #pragma warning restore 612, 618
         }

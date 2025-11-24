@@ -51,12 +51,6 @@ public class ReportsController : ControllerBase
                 Name = reportEntity.User.Name,
                 LastName = reportEntity.User.LastName,
                 Email = reportEntity.User.Email
-            },
-            Service = reportEntity.Service == null ? null : new ServiceDto
-            {
-                Id = reportEntity.Service.Id,
-                Type = reportEntity.Service.Type,
-                Company = reportEntity.Service.Company
             }
         };
 

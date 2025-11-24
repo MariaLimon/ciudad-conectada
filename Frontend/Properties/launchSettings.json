@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Windows Machine": {
+      "commandName": "MsixPackage"
+    },
+    "Android": {
+      "commandName": "Project"
+    },
+    "iOS": {
+      "commandName": "Project"
+    }
+  }
+}
