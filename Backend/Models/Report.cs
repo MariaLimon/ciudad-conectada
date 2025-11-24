@@ -6,23 +6,35 @@ namespace Backend.Models
     public class Report
     {
         public int Id { get; set; }
+
+        // Usuario que hizo el reporte
         [Required]
         public int UserId { get; set; }
         [ForeignKey("UserId")]
         public User? User { get; set; }
-        [Required]
-        public int TypeService { get; set; } 
-        [ForeignKey("TypeService")]
-        public Service? Service { get; set; }  
+
+        // Servicio 1
+        public int ServiceId1 { get; set; }
+        [ForeignKey("ServiceId1")]
+        public Service? Service1 { get; set; }
+
         [Required]
         public string Title { get; set; } = string.Empty;
+
         [Required]
         public string Description { get; set; } = string.Empty;
+
+        public string NotasExtras { get; set; } = string.Empty;
+
         [Required]
-        public string Estado { get; set; } = string.Empty;
+        public string Estado { get; set; } = "Pendiente";
+
         [Required]
         public string Location { get; set; } = string.Empty;
+
+        public string? Evidencia { get; set; } // ruta de imagen o archivo
+
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
