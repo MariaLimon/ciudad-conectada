@@ -1,25 +1,26 @@
-# Imagen base para ejecutar la app
+# Imagen base
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
-# Imagen para compilar la app
+# SDK para compilación
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar el csproj
-COPY ["Backend.csproj", "./"]
-RUN dotnet restore "./Backend.csproj"
+# Copiar SOLO el backend
+COPY Backend/Backend.csproj Backend/
+RUN dotnet restore "Backend/Backend.csproj"
 
-# Copiar el resto del código
-COPY . .
+# Copiar todo el backend
+COPY Backend/ Backend/
+WORKDIR /src/Backend
 RUN dotnet build "Backend.csproj" -c Release -o /app/build
 
-# Publicar la app
+# Publish
 FROM build AS publish
 RUN dotnet publish "Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Imagen final
+# Final
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
