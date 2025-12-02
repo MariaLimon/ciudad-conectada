@@ -1,25 +1,29 @@
-using Backend.Data; 
 using Backend.Models;
+using Backend.Interfaces;
+using BCrypt.Net; 
 
 namespace Backend.Services
 {
-    public interface IUserService
-    {
-        Task<User?> GetUserByIdAsync(int id);
-    }
-
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<User> _repository;
 
-        public UserService(ApplicationDbContext context)
+        public UserService(IRepository<User> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<User?> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<User?> ValidateUserAsync(string email, string password)
+        {
+            var userFromDb = await _repository.GetByConditionAsync(u => u.Email == email);
+            if (userFromDb == null) return null;
+
+            return BCrypt.Net.BCrypt.Verify(password, userFromDb.Password) ? userFromDb : null;
         }
     }
 }

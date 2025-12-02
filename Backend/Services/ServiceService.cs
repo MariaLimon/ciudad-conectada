@@ -7,7 +7,6 @@ namespace Backend.Services
     {
         private readonly IRepository<Service> _serviceRepository;
 
-        // Inyectamos el repositorio genérico
         public ServiceService(IRepository<Service> serviceRepository)
         {
             _serviceRepository = serviceRepository;
@@ -15,23 +14,19 @@ namespace Backend.Services
 
         public async Task<Service> CrearServicioAsync(Service servicio)
         {
-            // Aquí podrías agregar lógica de negocio, por ejemplo:
-            // - Verificar que no exista un servicio con el mismo tipo y compañía.
-            // - Formatear el nombre de la compañía a mayúsculas.
-
-            await _serviceRepository.AgregarAsync(servicio);
-            await _serviceRepository.GuardarCambiosAsync();
+            await _serviceRepository.AddAsync(servicio);  // 🔥 corregido
+            await _serviceRepository.SaveChangesAsync();  // 🔥 corregido
             return servicio;
         }
 
         public async Task<Service?> ObtenerServicioPorIdAsync(int id)
         {
-            return await _serviceRepository.ObtenerPorIdAsync(id);
+            return await _serviceRepository.GetByIdAsync(id); // 🔥 corregido
         }
 
         public async Task<IEnumerable<Service>> ObtenerTodosLosServiciosAsync()
         {
-            return await _serviceRepository.ObtenerTodosAsync();
+            return await _serviceRepository.GetAllAsync(); // 🔥 corregido
         }
     }
 }

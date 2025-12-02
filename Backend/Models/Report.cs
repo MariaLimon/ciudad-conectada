@@ -14,6 +14,7 @@ namespace Backend.Models
         public User? User { get; set; }
 
         // Servicio 1
+        [Required]
         public int ServiceId1 { get; set; }
         [ForeignKey("ServiceId1")]
         public Service? Service1 { get; set; }
@@ -24,15 +25,15 @@ namespace Backend.Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        public string NotasExtras { get; set; } = string.Empty;
+        public ICollection<NotasInternas>? NotasInternas { get; set; } = new List<NotasInternas>();
 
         [Required]
-        public string Estado { get; set; } = "Pendiente";
+        public string Estado { get; set; } = string.Empty;
 
         [Required]
         public string Location { get; set; } = string.Empty;
 
-        public string? Evidencia { get; set; } // ruta de imagen o archivo
+        public List<string>? Evidencias { get; set; } = new();
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

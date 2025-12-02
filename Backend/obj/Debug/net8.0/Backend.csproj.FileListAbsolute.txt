@@ -4,8 +4,10 @@ C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Bac
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Backend.runtimeconfig.json
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Backend.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Backend.pdb
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\DotNetEnv.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Humanizer.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.Build.Locator.dll
@@ -29,6 +31,12 @@ C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Mic
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Npgsql.dll
@@ -44,6 +52,7 @@ C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Sys
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.Composition.Runtime.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.IO.Pipelines.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\System.Text.Json.dll
@@ -135,3 +144,4 @@ C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\obj\Debug\net8.0\ref
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\obj\Debug\net8.0\Backend.pdb
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
 C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\obj\Debug\net8.0\ref\Backend.dll
+C:\Users\limon\OneDrive\Desktop\CC\ciudad-conectada\Backend\bin\Debug\net8.0\Backend.staticwebassets.runtime.json

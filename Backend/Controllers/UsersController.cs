@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
 using Backend.Data;
+using BCrypt.Net;
 
 namespace Backend.Controllers
 {
@@ -38,6 +39,10 @@ namespace Backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Hashear contraseña antes de guardar
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+            // Generar ID manualmente (no necesario si tienes Identity/auto increment)
             var maxId = await _context.Users.MaxAsync(u => (int?)u.Id) ?? 0;
             user.Id = maxId + 1;
 
