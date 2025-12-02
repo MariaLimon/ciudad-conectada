@@ -15,9 +15,8 @@ namespace Backend.Models
         [Required]
         public string Password { get; set; } = string.Empty;
         [Required]
-        public bool IsEmailConfirmed { get; set; }
+        public bool IsAdmin { get; set; } = false;
         [Required]
-        public bool IsAdmin { get; set; }
-        public ICollection<Report>? Reports { get; set; }
+        public string Rol { get; set; } = string.Empty;
     }
 }

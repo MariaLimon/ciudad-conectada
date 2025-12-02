@@ -1,53 +1,57 @@
-// Repositories/ServiceRepository.cs
-using Microsoft.EntityFrameworkCore;
-using Backend.Data;
 using Backend.Models;
 using Backend.Interfaces;
-
-public class ServiceRepository : IRepository<Service>
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using Backend.Data;
+namespace Backend.Repositories
 {
-    private readonly ApplicationDbContext _context;
-    private readonly DbSet<Service> _dbSet;
-
-    // Inyectamos el DbContext para poder acceder a la base de datos
-    public ServiceRepository(ApplicationDbContext context)
+    public class ServiceRepository : IRepository<Service>
     {
-        _context = context;
-        _dbSet = _context.Set<Service>();
-    }
+        private readonly ApplicationDbContext _context; // O tu nombre de contexto
 
-    public async Task AgregarAsync(Service entidad)
-    {
-        await _dbSet.AddAsync(entidad);
-    }
-
-    public void Actualizar(Service entidad)
-    {
-        _dbSet.Attach(entidad);
-        _context.Entry(entidad).State = EntityState.Modified;
-    }
-
-    public void Eliminar(Service entidad)
-    {
-        if (_context.Entry(entidad).State == EntityState.Detached)
+        public ServiceRepository(ApplicationDbContext context)
         {
-            _dbSet.Attach(entidad);
+            _context = context;
         }
-        _dbSet.Remove(entidad);
-    }
 
-    public async Task<Service?> ObtenerPorIdAsync(int id)
-    {
-        return await _dbSet.FindAsync(id);
-    }
+        public async Task<Service?> GetByIdAsync(int id)
+        {
+            return await _context.Services.FindAsync(id);
+        }
 
-    public async Task<IEnumerable<Service>> ObtenerTodosAsync()
-    {
-        return await _dbSet.ToListAsync();
-    }
+        public async Task<IEnumerable<Service>> GetAllAsync()
+        {
+            return await _context.Services.ToListAsync();
+        }
 
-    public async Task<int> GuardarCambiosAsync()
-    {
-        return await _context.SaveChangesAsync();
+        public async Task<Service?> GetByConditionAsync(Expression<Func<Service, bool>> expression)
+        {
+            return await _context.Services.FirstOrDefaultAsync(expression);
+        }
+
+
+        public async Task AddAsync(Service entity)
+        {
+            await _context.Services.AddAsync(entity);
+            await SaveChangesAsync();
+        }
+
+        public void Update(Service entity)
+        {
+            _context.Services.Update(entity);
+            _context.SaveChanges(); // o await SaveChangesAsync si lo haces async
+        }
+
+        public void Delete(Service entity)
+        {
+            _context.Services.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
     }
 }

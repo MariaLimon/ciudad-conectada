@@ -13,6 +13,7 @@ namespace Backend.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<NotasInternas> NotasInternas { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,16 +34,16 @@ namespace Backend.Data
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(255);
+                entity.Property(e => e.IsAdmin)
+                .IsRequired()
+                .HasDefaultValue(false);
 
                 entity.Property(e => e.Password)
                     .IsRequired()
+                    .HasMaxLength(200);
+                
+                entity.Property(e => e.Rol)
                     .HasMaxLength(50);
-
-                entity.Property(e => e.IsAdmin)
-                    .HasDefaultValue(false);
-
-                entity.Property(e => e.IsEmailConfirmed)
-                    .HasDefaultValue(false);
 
                 entity.HasIndex(e => e.Email).IsUnique();
 
@@ -82,6 +83,14 @@ namespace Backend.Data
                    .IsRequired()
                    .HasMaxLength(200);
            });
+            modelBuilder.Entity<NotasInternas>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(500);
+            });
         }
     }
 }

@@ -1,6 +1,6 @@
 using Backend.Models;
 
-namespace Backend.Services
+namespace Backend.Interfaces
 {
     public interface IServiceService // Nombra la interfaz de forma única
     {
