@@ -46,3 +46,18 @@ jobs:
       # por lo que no necesitamos configurar una base de datos PostgreSQL real aquí.
       - name: 'Ejecutar Pruebas del Backend'
         run: dotnet test Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --verbosity normal
+  
+  deploy-backend:
+      name: 'Deploy en Render'
+      runs-on: ubuntu-latest
+
+      #ESTE JOB SOLO SE EJECUTA SI EL ANTERIOR FUE EXITOSO
+      needs: build-and-test-backend
+
+      # SOLO DESPLIEGA SI ES PUSH A MAIN
+      if: github.ref == 'refs/heads/main'
+
+      steps:
+        - name: 'Desplegar en Render'
+          run: |
+            curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
