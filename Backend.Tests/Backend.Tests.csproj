@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backend.csproj" />
     <ProjectReference Include="..\Backend\Backend.csproj" />
   </ItemGroup>
 

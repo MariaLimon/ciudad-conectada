@@ -19,7 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 //  JWT
 // ==========================
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings.GetValue<string>("SecretKey");
+var secretKey = jwtSettings.GetValue<string>("SecretKey")
+    ?? throw new InvalidOperationException("JwtSettings:SecretKey no configurado.");
 var issuer = jwtSettings.GetValue<string>("Issuer");
 var audience = jwtSettings.GetValue<string>("Audience");
 

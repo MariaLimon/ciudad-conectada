@@ -1,61 +1,135 @@
 using Xunit;
-using Microsoft.EntityFrameworkCore;
-using Backend.Data;
+using Moq;
 using Backend.Models;
+using Backend.Interfaces;
 using Backend.Services;
+using System.Threading.Tasks;
 
 namespace Backend.Tests.Services
 {
     public class UserServiceTests
     {
-        private readonly ApplicationDbContext _context;
+        private readonly Mock<IRepository<User>> _repositoryMock;
         private readonly UserService _userService;
 
         public UserServiceTests()
         {
-            // Usamos la misma técnica de BD en memoria para simplicidad y robustez
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-
-            _context = new ApplicationDbContext(options);
-            _userService = new UserService(_context);
+            _repositoryMock = new Mock<IRepository<User>>();
+            _userService = new UserService(_repositoryMock.Object);
         }
 
         [Fact]
         public async Task GetUserByIdAsync_ShouldReturnUser_WhenUserExists()
         {
-            // Arrange (Preparación)
-            var userToFind = new User 
-            { 
-                Id = 1, 
-                Name = "Test", 
-                LastName = "User", 
+            // Arrange
+            var user = new User
+            {
+                Id = 1,
+                Name = "Test",
+                LastName = "User",
                 Email = "test@example.com",
-                Password = "Password123", // En un caso real, esto sería un hash
-                IsEmailConfirmed = true,
-                IsAdmin = false
+                Password = "hashedPassword",
+                IsAdmin = false,
+                Rol = "Usuario"
             };
 
-            _context.Users.Add(userToFind);
-            await _context.SaveChangesAsync();
+            _repositoryMock
+                .Setup(repo => repo.GetByIdAsync(1))
+                .ReturnsAsync(user);
 
-            // Act (Acción)
+            // Act
             var result = await _userService.GetUserByIdAsync(1);
 
-            // Assert (Verificación)
+            // Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Id);
-            Assert.Equal("Test", result.Name); // <-- Usamos la propiedad 'Name'
-            Assert.Equal("User", result.LastName); // <-- Usamos la propiedad 'LastName'
-            Assert.Equal("test@example.com", result.Email); // <-- Usamos la propiedad 'Email'
+            Assert.Equal(1, result!.Id);
+            Assert.Equal("Test", result.Name);
+            Assert.Equal("User", result.LastName);
+            Assert.Equal("test@example.com", result.Email);
+            Assert.Equal("Usuario", result.Rol);
         }
 
         [Fact]
         public async Task GetUserByIdAsync_ShouldReturnNull_WhenUserDoesNotExist()
         {
+            // Arrange
+            _repositoryMock
+                .Setup(repo => repo.GetByIdAsync(99))
+                .ReturnsAsync((User?)null);
+
             // Act
             var result = await _userService.GetUserByIdAsync(99);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task ValidateUserAsync_ShouldReturnUser_WhenPasswordIsCorrect()
+        {
+            // Arrange
+            var plainPassword = "123456";
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
+
+            var user = new User
+            {
+                Id = 1,
+                Name = "Test",
+                LastName = "User",
+                Email = "test@example.com",
+                Password = hashedPassword,
+                IsAdmin = false,
+                Rol = "Usuario"
+            };
+
+            _repositoryMock
+                .Setup(repo => repo.GetByConditionAsync(It.IsAny<System.Linq.Expressions.Expression<System.Func<User, bool>>>()))
+                .ReturnsAsync(user);
+
+            // Act
+            var result = await _userService.ValidateUserAsync("test@example.com", plainPassword);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("test@example.com", result!.Email);
+        }
+
+        [Fact]
+        public async Task ValidateUserAsync_ShouldReturnNull_WhenPasswordIsIncorrect()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = 1,
+                Name = "Test",
+                LastName = "User",
+                Email = "test@example.com",
+                Password = BCrypt.Net.BCrypt.HashPassword("correctPassword"),
+                IsAdmin = false,
+                Rol = "Usuario"
+            };
+
+            _repositoryMock
+                .Setup(repo => repo.GetByConditionAsync(It.IsAny<System.Linq.Expressions.Expression<System.Func<User, bool>>>()))
+                .ReturnsAsync(user);
+
+            // Act
+            var result = await _userService.ValidateUserAsync("test@example.com", "wrongPassword");
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task ValidateUserAsync_ShouldReturnNull_WhenUserDoesNotExist()
+        {
+            // Arrange
+            _repositoryMock
+                .Setup(repo => repo.GetByConditionAsync(It.IsAny<System.Linq.Expressions.Expression<System.Func<User, bool>>>()))
+                .ReturnsAsync((User?)null);
+
+            // Act
+            var result = await _userService.ValidateUserAsync("noexiste@test.com", "123456");
 
             // Assert
             Assert.Null(result);
