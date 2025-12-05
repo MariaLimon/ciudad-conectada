@@ -138,14 +138,17 @@ app.UseCors("AllowLocalhost");
 
 app.UseHttpsRedirection();
 
-// IMPORTANTE: ESTO VA AQUÍ, NO EN ADDSwaggerGEN
-app.UseStaticFiles(new StaticFileOptions
+var wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+if (Directory.Exists(wwwrootPath))
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
-    ),
-    RequestPath = ""
-});
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(wwwrootPath),
+        RequestPath = ""
+    });
+}
+
 
 app.UseAuthentication();
 app.UseAuthorization();
