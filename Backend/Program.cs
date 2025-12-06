@@ -48,19 +48,14 @@ builder.Services.AddAuthentication(options =>
 // ======================
 // CORS
 // ======================
-builder.Services.AddCors(o =>
+builder.Services.AddCors(options =>
 {
-    o.AddPolicy("AllowLocalhost", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins(
-            "http://127.0.0.1:5501",
-            "http://localhost:5501",
-            "https://127.0.0.1:5501",
-            "https://localhost:5501"
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
+        policy
+            .AllowAnyOrigin()    
+            .AllowAnyHeader()  
+            .AllowAnyMethod(); 
     });
 });
 
@@ -134,7 +129,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-app.UseCors("AllowLocalhost");
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
