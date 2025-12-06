@@ -1,0 +1,11 @@
+
+services:
+  backend:
+    build: .
+    container_name: backend_api
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=TU_CADENA_DE_CONEXION
+    restart: always
